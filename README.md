@@ -1,5 +1,3 @@
-# ulauncher-password-store
-
 A hacky [password store](https://www.passwordstore.org/) extension for the [ulauncher](https://ulauncher.io/).
 
 This extension needs:
