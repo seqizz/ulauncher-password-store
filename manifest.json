@@ -1,0 +1,21 @@
+{
+  "manifest_version": "1",
+  "api_version": "1",
+  "name": "Password store",
+  "description": "Copy your passwords from password store",
+  "developer_name": "gurkan.in",
+  "icon": "images/key.png",
+  "options": {
+    "query_debounce": 0.1
+  },
+  "preferences": [
+    {
+      "id": "pass_ext",
+      "type": "keyword",
+      "name": "Pass",
+      "description": "Copy your passwords from password store",
+      "default_value": "pass"
+    }
+  ]
+}
+
