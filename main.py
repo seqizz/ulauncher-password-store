@@ -20,22 +20,31 @@ class KeywordQueryEventListener(EventListener):
     	pipe = os.popen("find ~/.password-store/ | sed '/gpg$/!d;s/.*.password-store\///;s/.gpg$//'")
     	output = pipe.read()
         myList = event.query.split(" ")
+        custom_command = extension.preferences['custom_command']
+        custom_command_delay = extension.preferences['custom_command_delay']
+
         if len(myList) == 1:
             for line in output.splitlines():
+                sleep = "sleep 0" if not custom_command_delay else "sleep " + custom_command_delay
+                command = "pass show -c %s" % line
+                command = command if not custom_command else " && ".join([custom_command, command, sleep, custom_command])
                 items.append(ExtensionResultItem(icon='images/key.png',
                                                 name='%s' % line,
                                                 description='Copy %s to clipboard' % line,
-                                                on_enter=RunScriptAction("pass show -c %s" % line, None)))
+                                                on_enter=RunScriptAction(command, None)))
 
             return RenderResultListAction(items)
         else:
             myQuery = myList[1].lower()
             for line in output.splitlines():
+                sleep = "sleep 0" if not custom_command_delay else "sleep " + custom_command_delay
+                command = "pass show -c %s" % line
+                command = command if not custom_command else " && ".join([custom_command, command, sleep, custom_command])
                 if myQuery in line.lower():
                     items.append(ExtensionResultItem(icon='images/key.png',
                                                 name='%s' % line,
                                                 description='Copy %s to clipboard' % line,
-                                                on_enter=RunScriptAction("pass show -c %s" % line, None)))
+                                                on_enter=RunScriptAction(command, None)))
 
             return RenderResultListAction(items)
 
