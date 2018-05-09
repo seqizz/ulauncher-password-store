@@ -15,7 +15,19 @@
       "name": "Pass",
       "description": "Copy your passwords from password store",
       "default_value": "pass"
+    },
+    {
+        "id": "custom_command",
+        "type": "input",
+        "name": "Run custom command",
+        "description": "Run custom command before and after copying password. Ex: Put clipboard manager into offline (unmonitoring) mode"
+    },
+    {
+        "id": "custom_command_delay",
+        "type": "input",
+        "name": "Delay time before executing second command",
+        "description": "Sometimes, executing two commands one ofter the other causes problems. Increase delay time to solve this",
+        "default_value": 0
     }
   ]
 }
-
