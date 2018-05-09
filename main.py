@@ -29,9 +29,9 @@ class KeywordQueryEventListener(EventListener):
 
             return RenderResultListAction(items)
         else:
-            myQuery = myList[1]
+            myQuery = myList[1].lower()
             for line in output.splitlines():
-                if myQuery in line:
+                if myQuery in line.lower():
                     items.append(ExtensionResultItem(icon='images/key.png',
                                                 name='%s' % line,
                                                 description='Copy %s to clipboard' % line,
