@@ -46,7 +46,7 @@ class KeywordQueryEventListener(EventListener):
                                                 description='Copy %s to clipboard' % line,
                                                 on_enter=RunScriptAction(command, None)))
 
-            return RenderResultListAction(items)
+            return RenderResultListAction(items[:10])
 
 if __name__ == '__main__':
     PassExtension().run()
