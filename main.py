@@ -23,7 +23,7 @@ class KeywordQueryEventListener(EventListener):
         custom_command = extension.preferences['custom_command']
         custom_command_delay = extension.preferences['custom_command_delay']
 
-        if len(myList) == 1:
+        if not myList[1]:
             for line in output.splitlines():
                 sleep = "sleep 0" if not custom_command_delay else "sleep " + custom_command_delay
                 command = "pass show -c %s" % line
@@ -32,21 +32,19 @@ class KeywordQueryEventListener(EventListener):
                                                 name='%s' % line,
                                                 description='Copy %s to clipboard' % line,
                                                 on_enter=RunScriptAction(command, None)))
-
-            return RenderResultListAction(items)
         else:
-            myQuery = myList[1].lower()
+            myQuery = [item.lower() for item in myList[1:]]
             for line in output.splitlines():
                 sleep = "sleep 0" if not custom_command_delay else "sleep " + custom_command_delay
                 command = "pass show -c %s" % line
                 command = command if not custom_command else " && ".join([custom_command, command, sleep, custom_command])
-                if myQuery in line.lower():
+                if all(word in line.lower() for word in myQuery):
                     items.append(ExtensionResultItem(icon='images/key.png',
                                                 name='%s' % line,
                                                 description='Copy %s to clipboard' % line,
                                                 on_enter=RunScriptAction(command, None)))
 
-            return RenderResultListAction(items)
+        return RenderResultListAction(items[:10])
 
 if __name__ == '__main__':
     PassExtension().run()
