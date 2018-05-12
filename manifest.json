@@ -26,7 +26,7 @@
         "id": "custom_command_delay",
         "type": "input",
         "name": "Delay time before executing second command (by seconds)",
-        "description": "Sometimes, executing two commands one ofter the other causes problems. Increase delay time to solve this",
+        "description": "Sometimes, executing two commands one ofter the other causes problems. Increase delay time to solve this.",
         "default_value": 0
     },
     {
