@@ -5,6 +5,7 @@ from ulauncher.api.shared.item.ExtensionResultItem import ExtensionResultItem
 from ulauncher.api.shared.action.RenderResultListAction import RenderResultListAction
 from ulauncher.api.shared.action.RunScriptAction import RunScriptAction
 from os import walk, path
+from subprocess import check_output
 
 class PassExtension(Extension):
 
@@ -30,6 +31,7 @@ class KeywordQueryEventListener(EventListener):
         myList = event.query.split(" ")
         custom_command = extension.preferences['custom_command']
         custom_command_delay = extension.preferences['custom_command_delay']
+        enable_tail = extension.preferences['enable_tail']
 
         if not myList[1]:
             for line in pass_list:
@@ -46,11 +48,16 @@ class KeywordQueryEventListener(EventListener):
                 sleep = "sleep 0" if not custom_command_delay else "sleep " + custom_command_delay
                 command = "pass show -c %s" % line
                 command = command if not custom_command else " && ".join([custom_command, command, sleep, custom_command])
-                if all(word in line.lower() for word in myQuery):
+                if all(word in line.lower() for word in myQuery if word != "tail"):
+                    extra = "\n" + check_output(["pass", "tail", line]).strip() \
+                            if enable_tail and myQuery[-1] == "tail" else ''
                     items.append(ExtensionResultItem(icon='images/key.png',
                                                 name='%s' % line,
-                                                description='Copy %s to clipboard' % line,
+                                                description='Copy %s to clipboard%s' % (line, extra),
                                                 on_enter=RunScriptAction(command, None)))
+                    # `pass tail` command requires time to process. It's best to break it after first result.
+                    if extra:
+                        break
 
         return RenderResultListAction(items[:10])
 
