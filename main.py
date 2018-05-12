@@ -4,8 +4,9 @@ from ulauncher.api.shared.event import KeywordQueryEvent, ItemEnterEvent
 from ulauncher.api.shared.item.ExtensionResultItem import ExtensionResultItem
 from ulauncher.api.shared.action.RenderResultListAction import RenderResultListAction
 from ulauncher.api.shared.action.RunScriptAction import RunScriptAction
+from ulauncher.api.shared.action.OpenUrlAction import OpenUrlAction
 from os import walk, path
-from subprocess import check_output
+from subprocess import check_output, CalledProcessError
 
 class PassExtension(Extension):
 
@@ -49,8 +50,16 @@ class KeywordQueryEventListener(EventListener):
                 command = "pass show -c %s" % line
                 command = command if not custom_command else " && ".join([custom_command, command, sleep, custom_command])
                 if all(word in line.lower() for word in myQuery if word != "tail"):
-                    extra = "\n" + check_output(["pass", "tail", line]).strip() \
-                            if enable_tail and myQuery[-1] == "tail" else ''
+                    try:
+                        extra = "\n" + check_output(["pass", "tail", line]).strip() \
+                                if enable_tail and myQuery[-1] == "tail" else ''
+                    except CalledProcessError:
+                        items.append(ExtensionResultItem(icon='images/key.png',
+                                                    name='Pass tail extension is not installed',
+                                                    description='Press Enter to go to the extension\'s website',
+                                                    on_enter=OpenUrlAction('https://git.io/vpSgV')))
+                        break
+
                     items.append(ExtensionResultItem(icon='images/key.png',
                                                 name='%s' % line,
                                                 description='Copy %s to clipboard%s' % (line, extra),
