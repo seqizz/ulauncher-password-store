@@ -10,11 +10,11 @@
   },
   "preferences": [
     {
-      "id": "pass_ext",
-      "type": "keyword",
-      "name": "Pass",
-      "description": "Shortcut for enabling the extension.",
-      "default_value": "pass"
+        "id": "pass_ext",
+        "type": "keyword",
+        "name": "Pass",
+        "description": "Shortcut for enabling the extension.",
+        "default_value": "pass"
     },
     {
         "id": "custom_command",
