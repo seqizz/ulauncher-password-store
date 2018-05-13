@@ -1,5 +1,5 @@
 {
-  "manifest_version": "1",
+  "manifest_version": "2",
   "api_version": "1",
   "name": "Password store",
   "description": "Copy your passwords from password store",
