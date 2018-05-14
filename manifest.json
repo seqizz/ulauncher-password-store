@@ -17,6 +17,12 @@
         "default_value": "pass"
     },
     {
+        "id": "password_store_path",
+        "type": "input",
+        "name": "Path to password-store folder",
+        "default_value": "~/.password-store"
+    },
+    {
         "id": "custom_command",
         "type": "input",
         "name": "Run custom command",
