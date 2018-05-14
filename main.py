@@ -28,11 +28,13 @@ class KeywordQueryEventListener(EventListener):
 
     def on_event(self, event, extension):
         items = []
-        pass_list = self.list_gpg(path.join(path.expanduser("~"), ".password-store"))
         myList = event.query.split(" ")
+        password_store_path = extension.preferences['password_store_path']
+        password_store_path = path.expanduser(password_store_path) if "~" in password_store_path else password_store_path
         custom_command = extension.preferences['custom_command']
         custom_command_delay = extension.preferences['custom_command_delay']
         enable_tail = extension.preferences['enable_tail']
+        pass_list = self.list_gpg(password_store_path)
 
         if not myList[1]:
             for line in pass_list:
