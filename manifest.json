@@ -1,5 +1,5 @@
 {
-  "manifest_version": "1",
+  "manifest_version": "2",
   "api_version": "1",
   "name": "Password store",
   "description": "Copy your passwords from password store",
@@ -10,11 +10,17 @@
   },
   "preferences": [
     {
-      "id": "pass_ext",
-      "type": "keyword",
-      "name": "Pass",
-      "description": "Shortcut for enabling the extension.",
-      "default_value": "pass"
+        "id": "pass_ext",
+        "type": "keyword",
+        "name": "Pass",
+        "description": "Shortcut for enabling the extension.",
+        "default_value": "pass"
+    },
+    {
+        "id": "password_store_path",
+        "type": "input",
+        "name": "Path to password-store folder",
+        "default_value": "~/.password-store"
     },
     {
         "id": "custom_command",
@@ -26,7 +32,18 @@
         "id": "custom_command_delay",
         "type": "input",
         "name": "Delay time before executing second command (by seconds)",
-        "description": "Sometimes, executing two commands one ofter the other causes problems. Increase delay time to solve this",
+        "description": "Sometimes, executing two commands one ofter the other causes problems. Increase delay time to solve this.",
+        "default_value": 0
+    },
+    {
+        "id": "enable_tail",
+        "type": "select",
+        "name": "Enable tail command",
+        "description": "Trigger the tail command by adding \"tail\" to any query. <br><strong>Note:</strong> Requires pass-extension-tail extension. (https://git.io/vpSgV)",
+        "options": [
+            {"value": 1, "text": "Enable"},
+            {"value": 0, "text": "Disable"}
+        ],
         "default_value": 0
     }
   ]
