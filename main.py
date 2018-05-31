@@ -41,10 +41,14 @@ class KeywordQueryEventListener(EventListener):
                 sleep = "sleep 0" if not custom_command_delay else "sleep " + custom_command_delay
                 command = "pass show -c %s" % line
                 command = command if not custom_command else " && ".join([custom_command, command, sleep, custom_command])
-                items.append(ExtensionResultItem(icon='images/key.png',
-                                                name='%s' % line,
-                                                description='Copy %s to clipboard' % line,
-                                                on_enter=RunScriptAction(command, None)))
+                items.append(
+                    ExtensionResultItem(
+                        icon='images/key.png',
+                        name='%s' % line,
+                        description='Copy %s to clipboard' % line,
+                        on_enter=RunScriptAction(command, None)
+                    )
+                )
         else:
             myQuery = [item.lower() for item in myList[1:]]
             for line in pass_list:
@@ -56,16 +60,24 @@ class KeywordQueryEventListener(EventListener):
                         extra = "\n" + check_output(["pass", "tail", line]).strip() \
                                 if enable_tail and myQuery[-1] == "tail" else ''
                     except CalledProcessError:
-                        items.append(ExtensionResultItem(icon='images/key.png',
-                                                    name='Pass tail extension is not installed',
-                                                    description='Press Enter to go to the extension\'s website',
-                                                    on_enter=OpenUrlAction('https://git.io/vpSgV')))
+                        items.append(
+                            ExtensionResultItem(
+                                icon='images/key.png',
+                                name='Pass tail extension is not installed',
+                                description='Press Enter to go to the extension\'s website',
+                                on_enter=OpenUrlAction('https://git.io/vpSgV')
+                            )
+                        )
                         break
 
-                    items.append(ExtensionResultItem(icon='images/key.png',
-                                                name='%s' % line,
-                                                description='Copy %s to clipboard%s' % (line, extra),
-                                                on_enter=RunScriptAction(command, None)))
+                    items.append(
+                        ExtensionResultItem(
+                            icon='images/key.png',
+                            name='%s' % line,
+                            description='Copy %s to clipboard%s' % (line, extra),
+                            on_enter=RunScriptAction(command, None)
+                        )
+                    )
                     # `pass tail` command requires time to process. It's best to break it after first result.
                     if extra:
                         break
