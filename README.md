@@ -7,3 +7,6 @@ Latest features include:
 - Setting a custom password-store path.
 - Running a custom command before and after copying password. (Useful for putting clipboard managers into offline mode)
 - Optional [pass-extension-tail](https://git.io/vpSgV) support.
+
+Thanks to:
+- [wallace11](https://github.com/wallace11) for parameterization and tail support
