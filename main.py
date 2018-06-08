@@ -5,8 +5,26 @@ from ulauncher.api.shared.item.ExtensionResultItem import ExtensionResultItem
 from ulauncher.api.shared.action.RenderResultListAction import RenderResultListAction
 from ulauncher.api.shared.action.RunScriptAction import RunScriptAction
 from ulauncher.api.shared.action.OpenUrlAction import OpenUrlAction
-from os import walk, path
+from os import walk, path, split, access, environ, pathsep, X_OK
 from subprocess import check_output, CalledProcessError
+
+
+def is_exist(program):
+    def is_exe(fpath):
+        return path.isfile(fpath) and access(fpath, X_OK)
+
+    fpath, fname = path.split(program)
+    if fpath:
+        if is_exe(program):
+            return program
+    else:
+        for path in environ["PATH"].split(pathsep):
+            exe_file = path.join(path, program)
+            if is_exe(exe_file):
+                return exe_file
+
+    return None
+
 
 class PassExtension(Extension):
 
@@ -30,7 +48,8 @@ class KeywordQueryEventListener(EventListener):
         items = []
         myList = event.query.split(" ")
         password_store_path = extension.preferences['password_store_path']
-        password_store_path = path.expanduser(password_store_path) if "~" in password_store_path else password_store_path
+        if "~" in password_store_path:
+            password_store_path = path.expanduser(password_store_path)
         custom_command = extension.preferences['custom_command']
         custom_command_delay = extension.preferences['custom_command_delay']
         enable_tail = extension.preferences['enable_tail']
@@ -38,9 +57,14 @@ class KeywordQueryEventListener(EventListener):
 
         if not myList[1]:
             for line in pass_list:
-                sleep = "sleep 0" if not custom_command_delay else "sleep " + custom_command_delay
+                if not custom_command_delay:
+                    custom_command_delay = 0
+                sleep = "sleep " + custom_command_delay
                 command = "pass show -c %s" % line
-                command = command if not custom_command else " && ".join([custom_command, command, sleep, custom_command])
+                if custom_command:
+                    command = " && ".join(
+                        [custom_command, command, sleep, custom_command]
+                    )
                 items.append(
                     ExtensionResultItem(
                         icon='images/key.png',
@@ -52,9 +76,14 @@ class KeywordQueryEventListener(EventListener):
         else:
             myQuery = [item.lower() for item in myList[1:]]
             for line in pass_list:
-                sleep = "sleep 0" if not custom_command_delay else "sleep " + custom_command_delay
+                if not custom_command_delay:
+                    custom_command_delay = 0
+                sleep = "sleep " + custom_command_delay
                 command = "pass show -c %s" % line
-                command = command if not custom_command else " && ".join([custom_command, command, sleep, custom_command])
+                if custom_command:
+                    command = " && ".join(
+                        [custom_command, command, sleep, custom_command]
+                    )
                 if all(word in line.lower() for word in myQuery if word != "tail"):
                     try:
                         extra = "\n" + check_output(["pass", "tail", line]).strip() \
