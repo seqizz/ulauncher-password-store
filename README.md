@@ -6,6 +6,7 @@ Latest features include:
 - Search & copy passwords to clipboard.
 - Setting a custom password-store path.
 - Running a custom command before and after copying password. (Useful for putting clipboard managers into offline mode)
+- Optional password generation support with pwgen command. (Directly saving this to pass not *yet* supported)
 - Optional [pass-extension-tail](https://git.io/vpSgV) support.
 
 Thanks to:

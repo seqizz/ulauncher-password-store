@@ -36,6 +36,24 @@
         "default_value": 0
     },
     {
+        "id": "use_pwgen",
+        "type": "select",
+        "name": "Use pwgen",
+        "description": "Use pwgen for password generation. You need either Python's pwgen module or pwgen command available.",
+        "options": [
+            {"value": 1, "text": "Enable"},
+            {"value": 0, "text": "Disable"}
+        ],
+        "default_value": 0
+    },
+    {
+        "id": "gen_shortcut",
+        "type": "input",
+        "name": "Generate command",
+        "description": "Which command should we use to generate passwords? By default it is \"gen\"",
+        "default_value": "gen"
+    },
+    {
         "id": "enable_tail",
         "type": "select",
         "name": "Enable tail command",
