@@ -5,7 +5,6 @@ from ulauncher.api.shared.event import KeywordQueryEvent, ItemEnterEvent
 from ulauncher.api.shared.item.ExtensionResultItem import ExtensionResultItem
 from ulauncher.api.shared.action.RenderResultListAction import RenderResultListAction
 from ulauncher.api.shared.action.RunScriptAction import RunScriptAction
-from ulauncher.api.shared.action.CopyToClipboardAction import CopyToClipboardAction
 from ulauncher.api.shared.action.OpenUrlAction import OpenUrlAction
 from os import walk, path, access, environ, pathsep, X_OK
 from subprocess import check_output, CalledProcessError
@@ -74,7 +73,7 @@ class KeywordQueryEventListener(EventListener):
                 if not custom_command_delay:
                     custom_command_delay = 0
                 sleep = "sleep " + str(custom_command_delay)
-                command = "pass show -c %s" % line
+                command = "pass show -c {}".format(line)
                 if custom_command:
                     command = " && ".join(
                         [custom_command, command, sleep, custom_command]
@@ -123,12 +122,20 @@ class KeywordQueryEventListener(EventListener):
 
                 if passwords:
                     for line in passwords:
+                        if not custom_command_delay:
+                            custom_command_delay = 0
+                        sleep = "sleep " + str(custom_command_delay)
+                        command = "pass show -c {}".format(line)
+                        if custom_command:
+                            command = " && ".join(
+                                [custom_command, command, sleep, custom_command]
+                            )
                         items.append(
                             ExtensionResultItem(
                                 icon='images/key.png',
                                 name=markup_escape_text(line),
                                 description='Copy {} to clipboard'.format(line),
-                                on_enter=CopyToClipboardAction(line)
+                                on_enter=RunScriptAction(command, None)
                             )
                         )
                 # We are not returning here, in case we have similar password
@@ -165,7 +172,7 @@ class KeywordQueryEventListener(EventListener):
                             icon='images/key.png',
                             name='%s' % line,
                             description='Copy %s to clipboard%s' % (line, extra),
-                            on_enter=CopyToClipboardAction(command)
+                            on_enter=RunScriptAction(command, None)
                         )
                     )
                     # `pass tail` command requires time to process.
