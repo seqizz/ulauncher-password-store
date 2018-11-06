@@ -101,7 +101,7 @@ class KeywordQueryEventListener(EventListener):
                     return
 
                 if use_pwgen and len(myList) == 2:
-                    command = 'pwgen -1 -c -n -y 16 8'
+                    command = '{} -1 -c -n -y 16 8'.format(is_exist('pwgen'))
                     output = check_output(command.split(' '))
                     passwords = output.splitlines()
 
@@ -116,7 +116,10 @@ class KeywordQueryEventListener(EventListener):
                                 )
                             )
                     else:
-                        command = 'pwgen -1 -c -n -y {} 8'.format(str(myList[2]))
+                        command = '{} -1 -c -n -y {} 8'.format(
+                                is_exist('pwgen'),
+                                str(myList[2])
+                            )
                         output = check_output(command.split(' '))
                         passwords = output.splitlines()
 
