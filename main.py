@@ -116,6 +116,15 @@ class KeywordQueryEventListener(EventListener):
                                     highlightable=False
                                 )
                             )
+                    elif int(myList[2]) > 1000:
+                        items.append(
+                            ExtensionResultItem(
+                                    icon='images/key.png',
+                                    name='1000+ is too long to be sane',
+                                    description='Please give a lower number',
+                                    highlightable=False
+                                )
+                            )
                     else:
                         command = '{} -1 -c -n -y {} 8'.format(
                                 is_exist('pwgen'),
